@@ -1,0 +1,698 @@
+html, body {
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
+}
+
+#root {
+  overflow-x: hidden;
+  width: 100%;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 225 40% 8%;
+    --foreground: 40 30% 92%;
+    --card: 222 47% 11%;
+    --card-foreground: 40 30% 92%;
+    --popover: 222 47% 11%;
+    --popover-foreground: 40 30% 92%;
+    --primary: 43 74% 49%;
+    --primary-foreground: 225 40% 8%;
+    --secondary: 225 30% 16%;
+    --secondary-foreground: 40 30% 92%;
+    --muted: 225 25% 20%;
+    --muted-foreground: 220 15% 55%;
+    --accent: 43 74% 49%;
+    --accent-foreground: 225 40% 8%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 40 30% 92%;
+    --border: 225 25% 18%;
+    --input: 225 25% 18%;
+    --ring: 43 74% 49%;
+    --radius: 0.5rem;
+    --sidebar-background: 225 35% 10%;
+    --sidebar-foreground: 40 30% 92%;
+    --sidebar-primary: 43 74% 49%;
+    --sidebar-primary-foreground: 225 40% 8%;
+    --sidebar-accent: 225 30% 16%;
+    --sidebar-accent-foreground: 40 30% 92%;
+    --sidebar-border: 225 25% 18%;
+    --sidebar-ring: 43 74% 49%;
+
+    /* New Colors as per requirements */
+    --bg: #0B1020;
+    --card-bg: #0F172A;
+    --nav-bg: rgba(13,22,46,.96);
+    --text: #E6ECF8;
+    
+    --gold-light: 43 80% 60%;
+    --gold-dark: 35 70% 35%;
+    --gold-gradient: linear-gradient(135deg, #D4AF37 0%, #FFD700 50%, #F6E27A 100%);
+    --gold-text-gradient: linear-gradient(135deg, #D4AF37 0%, #FFD700 50%, #F6E27A 100%);
+    --shadow-gold: 0 4px 30px -5px hsl(43 74% 49% / 0.2);
+    --shadow-gold-lg: 0 10px 50px -10px hsl(43 74% 49% / 0.3);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Cairo', sans-serif;
+  }
+}
+
+@layer utilities {
+  .gold-gradient {
+    background: var(--gold-gradient);
+  }
+  .gold-text {
+    background: var(--gold-text-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .gold-border {
+    border-color: hsl(43 74% 49% / 0.3);
+  }
+  .gold-border-hover:hover {
+    border-color: hsl(43 74% 49% / 0.6);
+  }
+  .gold-shadow {
+    box-shadow: var(--shadow-gold);
+  }
+  .gold-shadow-lg {
+    box-shadow: var(--shadow-gold-lg);
+  }
+  .glass-dark {
+    background: hsl(225 40% 8% / 0.85);
+    backdrop-filter: blur(20px);
+  }
+  .animation-delay-200 {
+    animation-delay: 200ms;
+  }
+  .animation-delay-400 {
+    animation-delay: 400ms;
+  }
+  .navy-card {
+    background: hsl(225 35% 14%);
+    border: 1px solid hsl(225 25% 22%);
+  }
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Gold Theme Colors */
+  .theme-bg {
+    background: var(--bg);
+  }
+  .theme-card-bg {
+    background: var(--card-bg);
+  }
+  .theme-nav-bg {
+    background: var(--nav-bg);
+  }
+  .theme-text {
+    color: var(--text);
+  }
+
+  /* Moving Text (Marquee) */
+  @keyframes marquee {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+  .marquee-container {
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .marquee-content {
+    display: inline-block;
+    animation: marquee 30s linear infinite;
+  }
+
+  /* Floating Background Elements */
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0) rotate(0deg);
+      opacity: 0.3;
+    }
+    50% {
+      transform: translateY(-30px) rotate(180deg);
+      opacity: 0.6;
+    }
+  }
+  .float-animation {
+    animation: float 8s ease-in-out infinite;
+  }
+  .float-animation-delayed {
+    animation: float 10s ease-in-out infinite;
+    animation-delay: 2s;
+  }
+  .float-animation-slow {
+    animation: float 12s ease-in-out infinite;
+    animation-delay: 4s;
+  }
+
+  /* Hero Slider Fade + Zoom */
+  @keyframes fadeZoom {
+    0% {
+      opacity: 0;
+      transform: scale(1.1);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  .fade-zoom {
+    animation: fadeZoom 1s ease-out forwards;
+  }
+  .fade-zoom-out {
+    animation: fadeZoom 1s ease-out reverse forwards;
+  }
+
+  /* 3D Carousel Rotation */
+  @keyframes rotate3d {
+    0% {
+      transform: perspective(1000px) rotateY(0deg);
+    }
+    100% {
+      transform: perspective(1000px) rotateY(360deg);
+    }
+  }
+
+  /* True 3D Circular Carousel */
+  .carousel-3d-scene {
+    perspective: 1100px;
+    perspective-origin: center center;
+  }
+
+  .carousel-3d-track {
+    transform-style: preserve-3d;
+    will-change: transform;
+  }
+
+  .carousel-3d-item {
+    position: absolute;
+    top: 0;
+    left: 0;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    will-change: transform, opacity;
+  }
+  
+  /* Testimonial Auto Slider */
+  @keyframes slideInUp {
+    0% {
+      opacity: 0;
+      transform: translateX(100%);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  .slide-in-up {
+    animation: slideInUp 0.5s ease-out forwards;
+  }
+
+  /* تأثير الذهب اللامع */
+  .gold-shine {
+    background: linear-gradient(90deg, #d4af37, #f4e4ba, #d4af37);
+    background-size: 200% auto;
+    animation: shine 3s linear infinite;
+  }
+
+  @keyframes shine {
+    to {
+      background-position: 200% center;
+    }
+  }
+
+  @keyframes card-approval-spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    49% {
+      transform: rotate(175.622deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  /* زر المفضلة */
+  .wish {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    z-index: 10;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    padding: 0.5rem;
+    transition: all 0.2s;
+  }
+
+  .wish:hover {
+    background: white;
+    transform: scale(1.1);
+  }
+
+  /* معلومات المنتج */
+  .carousel-item-info {
+    padding: 1rem;
+    text-align: center;
+  }
+
+  .carousel-item-name {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+
+  .carousel-item-price {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: hsl(43 74% 49%);
+    margin-bottom: 1rem;
+  }
+
+  /* صورة المنتج */
+  .carousel-item-image {
+    object-fit: contain;
+    padding: 1rem;
+  }
+
+  /* Purple theme colors for CardInfo */
+  :root {
+    --purple: #7d5af2;
+    --purple-soft: #f3edff;
+    --purple-line: #d6c8ff;
+    --text: #333;
+    --muted: #777;
+    --custom-font: 'Cairo', 'Tajawal', sans-serif;
+  }
+
+  /* Page Title */
+  .page-title {
+    margin: 0;
+    padding: 18px 15px;
+    font-size: 26px;
+    font-weight: 800;
+    color: #111;
+    text-align: right;
+  }
+
+  /* Card Form Section */
+  .card-form-section {
+    background: var(--purple-soft);
+    border: 1px solid var(--purple-line);
+    border-radius: 16px;
+    margin: 0 18px 0;
+    padding: 0;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(125, 90, 242, 0.08);
+    display: flex;
+    flex-direction: column;
+    height: 149px;
+  }
+
+  /* Card Header */
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 20px;
+    border-bottom: 1px solid var(--purple-line);
+    justify-content: space-between;
+  }
+
+  .radio-circle {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 2px solid var(--purple);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .radio-circle::after {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--purple);
+  }
+
+  .add-card-text {
+    font-size: 16px;
+    font-weight: 600;
+    color: #000;
+  }
+
+  /* Card Number Input Container */
+  .card-number-input-container {
+    position: relative;
+    width: 100%;
+  }
+
+  /* Main card number input container - 43px height */
+  .card-form-section > .card-number-input-container {
+    height: 43px;
+  }
+
+  .card-input-field {
+    width: 100%;
+    padding: 12px 14px;
+    border: none;
+    border-bottom: 1px solid var(--purple-line);
+    font-size: 16px;
+    text-align: right;
+    background: #fff;
+    transition: 0.2s;
+    border-radius: 0;
+  }
+
+  /* Main card number input field - 43px height */
+  .card-form-section > .card-number-input-container .card-input-field {
+    height: 43px;
+    padding: 12px 14px 12px 145px;
+  }
+
+  .card-input-field:focus {
+    outline: 0;
+    background: #f9f7ff;
+  }
+
+  /* Brand logos inside card number field */
+  .brand-logos-inside {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-left: 2px;
+    width: 110.89px;
+    height: 18px;
+  }
+
+  .brand-logos-inside img {
+    height: 18px;
+    width: auto;
+    filter: grayscale(90%);
+    opacity: 0.8;
+    display: block;
+  }
+
+  #card_number {
+    padding-left: 145px;
+  }
+
+  /* CVV Expiry Row */
+  .cvv-expiry-row {
+    display: flex;
+    width: 100%;
+  }
+
+  /* CVV Expiry Row - 42px height */
+  .card-form-section > .cvv-expiry-row {
+    height: 42px;
+  }
+
+  .cvv-expiry-row .card-number-input-container {
+    flex: 1;
+    position: relative;
+  }
+
+  /* CVV Expiry row containers - 42px height each */
+  .cvv-expiry-row .card-number-input-container {
+    height: 42px;
+  }
+
+  /* CVV Expiry inputs - 42px height */
+  .cvv-expiry-row .card-number-input-container input {
+    width: 100%;
+    height: 42px;
+    padding: 12px 14px;
+    border: none;
+    font-size: 16px;
+    text-align: right;
+    background: #fff;
+    transition: 0.2s;
+    border-radius: 0;
+  }
+
+  .cvv-expiry-row .card-number-input-container input:focus {
+    outline: 0;
+    background: #f9f7ff;
+  }
+
+  /* Vertical divider line */
+  .cvv-expiry-row .card-number-input-container:first-child::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1px;
+    height: 60%;
+    background: var(--purple-line);
+  }
+
+  .cvv-expiry-row input {
+    border-bottom: none;
+  }
+
+  /* Plan Section */
+  .plan-title {
+    color: rgb(102, 102, 102);
+    font-family: var(--custom-font);
+    font-size: 14px;
+    line-height: 22px;
+    margin-top: 24px;
+    margin-bottom: 12px;
+    margin-right: 24px;
+    height: 22px;
+  }
+
+  .plan-box {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 16px;
+    padding: 14px 18px;
+    margin: 0 15px 20px;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
+    cursor: pointer;
+    height: 87px;
+  }
+
+  .plan-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 57px;
+  }
+
+  .plan-details {
+    display: flex;
+    flex-direction: column;
+    height: 57px;
+  }
+
+  .monthly-amount {
+    font-family: var(--custom-font);
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 22px;
+    color: #000;
+    direction: rtl;
+  }
+
+  .total-amount-details {
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 19px;
+    color: #666;
+    direction: rtl;
+  }
+
+  .arrow-icon {
+    font-size: 22px;
+    color: rgb(153, 153, 153);
+    font-weight: bold;
+    transition: transform 0.25s;
+    height: 30px;
+  }
+
+  .arrow-icon.rotated {
+    transform: rotate(180deg);
+  }
+
+  /* USD Badge */
+  .usd-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-right: 8px;
+    padding: 3px 10px;
+    border-radius: 999px;
+    background: #f6f6f6;
+    border: 1px solid #e9e9e9;
+    color: #111;
+    font-size: 12px;
+    font-weight: 700;
+    direction: ltr;
+    white-space: nowrap;
+  }
+
+  .usd-badge small {
+    font-weight: 700;
+    opacity: 0.75;
+    font-size: 11px;
+  }
+
+  /* Payment Button */
+  .payment-btn {
+    height: 54px;
+    padding: 16px 0;
+    background: #e5e5e5;
+    color: #999999;
+    font-size: 12px;
+    font-weight: 400;
+    border: 0;
+    border-radius: 16px;
+    cursor: pointer;
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 0;
+    z-index: 10;
+    margin-bottom: 10px;
+  }
+
+  .payment-btn.active {
+    background: #000;
+    color: #fff;
+    font-weight: 600;
+  }
+
+  /* Bottom Sheet */
+  .bottom-sheet {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: -100%;
+    background: #fff;
+    border-radius: 20px 20px 0 0;
+    box-shadow: 0 -2px 20px rgba(0, 0, 0, 0.1);
+    transition: bottom 0.3s ease-out;
+    z-index: 9999;
+    padding: 20px;
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+
+  .bottom-sheet.active {
+    bottom: 0;
+  }
+
+  .bottom-sheet-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 800;
+    font-size: 20px;
+    margin-bottom: 15px;
+  }
+
+  .bottom-sheet-close {
+    background: none;
+    border: none;
+    font-size: 30px;
+    color: #333;
+    cursor: pointer;
+    line-height: 1;
+  }
+
+  .installment-plan-badge {
+    background: var(--purple);
+    color: #fff;
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 12px;
+    font-weight: 700;
+    display: inline-block;
+    margin-bottom: 10px;
+  }
+
+  .installment-list {
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  .installment-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #fff;
+    border: 1px solid #f0f0f0;
+    border-radius: 12px;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+  }
+
+  .installment-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .radio-fake {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 2px solid #777;
+    display: inline-block;
+  }
+
+  .installment-amount {
+    font-weight: 800;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .installment-date {
+    color: var(--muted);
+    font-size: 13px;
+  }
+
+  .installment-total {
+    text-align: right;
+    font-weight: bold;
+    font-size: 16px;
+    padding-top: 10px;
+    border-top: 1px solid #eee;
+    margin-top: 10px;
+  }
+}
