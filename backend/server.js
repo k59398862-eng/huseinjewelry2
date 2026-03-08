@@ -30,12 +30,19 @@ try {
 }
 app.use("/uploads", express.static(uploadsDir));
 
-const apiLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 200,
+app.get("/api/health", (_req, res) => res.json({ status: "ok", time: new Date().toISOString() }));
+
+const pollingLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 1000,
   message: { error: "طلبات كثيرة جداً، يرجى المحاولة لاحقاً" },
 });
-app.use("/api/", apiLimiter);
+
+const apiLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 500,
+  message: { error: "طلبات كثيرة جداً، يرجى المحاولة لاحقاً" },
+});
 
 const adminRouter = require("./routes/admin");
 const productsRouter = require("./routes/products");
@@ -44,14 +51,16 @@ const paymentsRouter = require("./routes/payments");
 const telegramRouter = require("./routes/telegram");
 const checkoutRouter = require("./routes/checkout");
 
+app.use("/api/checkout/approval", pollingLimiter);
+app.use("/api/checkout/verification-result", pollingLimiter);
+app.use("/api/", apiLimiter);
+
 app.use("/api/admin", adminRouter);
 app.use("/api/products", productsRouter);
 app.use("/api/orders", ordersRouter);
 app.use("/api/payments", paymentsRouter);
 app.use("/api/telegram", telegramRouter);
 app.use("/api/checkout", checkoutRouter);
-
-app.get("/api/health", (_req, res) => res.json({ status: "ok", time: new Date().toISOString() }));
 
 app.use((err, _req, res, _next) => {
   console.error(err);
