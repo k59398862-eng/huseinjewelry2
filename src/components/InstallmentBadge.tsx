@@ -5,20 +5,20 @@ interface InstallmentBadgeProps {
   price: number;
   showDetails?: boolean;
   variant?: 'compact' | 'full';
+  productId?: number;
 }
 
 const INSTALLMENT_PACKAGES: { totalAmount: number; installmentsCount: number; perInstallment: number }[] = [
-  { totalAmount: 5580, installmentsCount: 4, perInstallment: 1395 },
+  { totalAmount: 4140, installmentsCount: 4, perInstallment: 1035 },
   { totalAmount: 6000, installmentsCount: 12, perInstallment: 500 },
-  { totalAmount: 7440, installmentsCount: 4, perInstallment: 1860 },
-  { totalAmount: 10850, installmentsCount: 6, perInstallment: 1808 },
-  { totalAmount: 16120, installmentsCount: 6, perInstallment: 2687 },
-  { totalAmount: 22320, installmentsCount: 6, perInstallment: 3720 },
-  { totalAmount: 26660, installmentsCount: 6, perInstallment: 4443 },
-  { totalAmount: 27776, installmentsCount: 12, perInstallment: 2314 },
-  { totalAmount: 40300, installmentsCount: 12, perInstallment: 3358 },
-  { totalAmount: 65348, installmentsCount: 12, perInstallment: 5445 },
-  { totalAmount: 130820, installmentsCount: 36, perInstallment: 3634 },
+  { totalAmount: 8280, installmentsCount: 4, perInstallment: 2070 },
+  { totalAmount: 12420, installmentsCount: 6, perInstallment: 2070 },
+  { totalAmount: 20700, installmentsCount: 4, perInstallment: 5175 },
+  { totalAmount: 24000, installmentsCount: 24, perInstallment: 1000 },
+  { totalAmount: 31050, installmentsCount: 6, perInstallment: 5175 },
+  { totalAmount: 50000, installmentsCount: 12, perInstallment: 4167 },
+  { totalAmount: 18000, installmentsCount: 1, perInstallment: 18000 },
+  { totalAmount: 100000, installmentsCount: 36, perInstallment: 2778 },
 ];
 
 const PAYMENT_DATES = [
@@ -34,13 +34,19 @@ export function getInstallmentPackage(price: number) {
   return INSTALLMENT_PACKAGES.find(pkg => pkg.totalAmount === price) || null;
 }
 
+function isTamaraOnly(productId?: number): boolean {
+  if (productId === undefined) return false;
+  return productId >= 1 && productId <= 9;
+}
+
 export function formatPriceArabic(price: number): string {
   const formatted = new Intl.NumberFormat('en-US').format(price);
   return toArabicNumbers(formatted);
 }
 
-export const InstallmentBadge = ({ price, showDetails = false, variant = 'compact' }: InstallmentBadgeProps) => {
+export const InstallmentBadge = ({ price, showDetails = false, variant = 'compact', productId }: InstallmentBadgeProps) => {
   const pkg = getInstallmentPackage(price);
+  const tamaraOnly = isTamaraOnly(productId);
 
   if (!pkg) return null;
 
@@ -113,7 +119,7 @@ export const InstallmentBadge = ({ price, showDetails = false, variant = 'compac
 
         <div className="mt-4 flex items-center gap-2 text-xs text-green-600 bg-green-50 px-3 py-2 rounded-lg">
           <span className="font-semibold">✓</span>
-          <span>متاح الدفع عبر Tamara أو Tabby</span>
+          <span>{tamaraOnly ? 'متاح الدفع عبر Tamara' : 'متاح الدفع عبر Tamara أو Tabby'}</span>
         </div>
       </div>
     </div>
