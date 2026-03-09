@@ -7,20 +7,20 @@ interface InstallmentBadgeProps {
   variant?: 'compact' | 'full';
 }
 
-// بيانات خطط التقسيط المتاحة
 const INSTALLMENT_PACKAGES: { totalAmount: number; installmentsCount: number; perInstallment: number }[] = [
-  { totalAmount: 4140, installmentsCount: 4, perInstallment: 1035 },
-  { totalAmount: 6210, installmentsCount: 6, perInstallment: 1035 },
-  { totalAmount: 8280, installmentsCount: 4, perInstallment: 2070 },
-  { totalAmount: 12420, installmentsCount: 6, perInstallment: 2070 },
-  { totalAmount: 20700, installmentsCount: 4, perInstallment: 5175 },
-  { totalAmount: 24000, installmentsCount: 24, perInstallment: 1000 },
-  { totalAmount: 31050, installmentsCount: 6, perInstallment: 5175 },
-  { totalAmount: 50000, installmentsCount: 12, perInstallment: 4166 },
-  { totalAmount: 100000, installmentsCount: 36, perInstallment: 2777 },
+  { totalAmount: 5580, installmentsCount: 4, perInstallment: 1395 },
+  { totalAmount: 7440, installmentsCount: 4, perInstallment: 1860 },
+  { totalAmount: 8060, installmentsCount: 4, perInstallment: 2015 },
+  { totalAmount: 10850, installmentsCount: 6, perInstallment: 1808 },
+  { totalAmount: 16120, installmentsCount: 6, perInstallment: 2687 },
+  { totalAmount: 22320, installmentsCount: 6, perInstallment: 3720 },
+  { totalAmount: 26660, installmentsCount: 6, perInstallment: 4443 },
+  { totalAmount: 27776, installmentsCount: 12, perInstallment: 2314 },
+  { totalAmount: 40300, installmentsCount: 12, perInstallment: 3358 },
+  { totalAmount: 65348, installmentsCount: 12, perInstallment: 5445 },
+  { totalAmount: 130820, installmentsCount: 36, perInstallment: 3634 },
 ];
 
-// تواريخ الدفع الثابتة
 const PAYMENT_DATES = [
   '٤ أبريل ٢٠٢٦',
   '٤ مايو ٢٠٢٦',

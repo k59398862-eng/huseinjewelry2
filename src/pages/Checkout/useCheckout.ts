@@ -18,16 +18,17 @@ import type { InstallmentPackage, PaymentMethod, Step } from './types';
 const DEFAULT_INSTALLMENTS = 4;
 
 const INSTALLMENT_PACKAGES: InstallmentPackage[] = [
-  { totalAmount: 4140, installmentsCount: 4, perInstallment: 1035, commission: 210, netTransfer: 3930 },
-  { totalAmount: 8280, installmentsCount: 4, perInstallment: 2070, commission: 410, netTransfer: 7870 },
-  { totalAmount: 20700, installmentsCount: 4, perInstallment: 5175, commission: 1040, netTransfer: 19660 },
-  { totalAmount: 6210, installmentsCount: 6, perInstallment: 1035, commission: 310, netTransfer: 5900 },
-  { totalAmount: 12420, installmentsCount: 6, perInstallment: 2070, commission: 620, netTransfer: 11800 },
-  { totalAmount: 31050, installmentsCount: 6, perInstallment: 5175, commission: 1550, netTransfer: 29500 },
-  { totalAmount: 18000, installmentsCount: 12, perInstallment: 1500, commission: 900, netTransfer: 17100 },
-  { totalAmount: 50000, installmentsCount: 12, perInstallment: 4166, commission: 1800, netTransfer: 48200 },
-  { totalAmount: 24000, installmentsCount: 24, perInstallment: 1000, commission: 600, netTransfer: 23400 },
-  { totalAmount: 100000, installmentsCount: 36, perInstallment: 2777, commission: 2200, netTransfer: 97800 },
+  { totalAmount: 5580, installmentsCount: 4, perInstallment: 1395, commission: 280, netTransfer: 5300 },
+  { totalAmount: 7440, installmentsCount: 4, perInstallment: 1860, commission: 370, netTransfer: 7070 },
+  { totalAmount: 8060, installmentsCount: 4, perInstallment: 2015, commission: 400, netTransfer: 7660 },
+  { totalAmount: 10850, installmentsCount: 6, perInstallment: 1808, commission: 540, netTransfer: 10310 },
+  { totalAmount: 16120, installmentsCount: 6, perInstallment: 2687, commission: 800, netTransfer: 15320 },
+  { totalAmount: 22320, installmentsCount: 6, perInstallment: 3720, commission: 1110, netTransfer: 21210 },
+  { totalAmount: 26660, installmentsCount: 6, perInstallment: 4443, commission: 1330, netTransfer: 25330 },
+  { totalAmount: 27776, installmentsCount: 12, perInstallment: 2314, commission: 1390, netTransfer: 26386 },
+  { totalAmount: 40300, installmentsCount: 12, perInstallment: 3358, commission: 2015, netTransfer: 38285 },
+  { totalAmount: 65348, installmentsCount: 12, perInstallment: 5445, commission: 3267, netTransfer: 62081 },
+  { totalAmount: 130820, installmentsCount: 36, perInstallment: 3634, commission: 2900, netTransfer: 127920 },
 ];
 
 interface CheckoutUser {

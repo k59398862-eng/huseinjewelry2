@@ -19,20 +19,21 @@ interface PaymentMethodSelectionProps {
 }
 
 const ALL_PACKAGES = [
-  { totalAmount: 4140, installmentsCount: 4, perInstallment: 1035, commission: 210 },
-  { totalAmount: 8280, installmentsCount: 4, perInstallment: 2070, commission: 410 },
-  { totalAmount: 20700, installmentsCount: 4, perInstallment: 5175, commission: 1040 },
-  { totalAmount: 6210, installmentsCount: 6, perInstallment: 1035, commission: 310 },
-  { totalAmount: 12420, installmentsCount: 6, perInstallment: 2070, commission: 620 },
-  { totalAmount: 31050, installmentsCount: 6, perInstallment: 5175, commission: 1550 },
-  { totalAmount: 18000, installmentsCount: 12, perInstallment: 1500, commission: 900 },
-  { totalAmount: 24000, installmentsCount: 24, perInstallment: 1000, commission: 600 },
-  { totalAmount: 50000, installmentsCount: 12, perInstallment: 4166, commission: 1800 },
-  { totalAmount: 100000, installmentsCount: 36, perInstallment: 2777, commission: 2200 },
+  { totalAmount: 5580, installmentsCount: 4, perInstallment: 1395, commission: 280 },
+  { totalAmount: 7440, installmentsCount: 4, perInstallment: 1860, commission: 370 },
+  { totalAmount: 8060, installmentsCount: 4, perInstallment: 2015, commission: 400 },
+  { totalAmount: 10850, installmentsCount: 6, perInstallment: 1808, commission: 540 },
+  { totalAmount: 16120, installmentsCount: 6, perInstallment: 2687, commission: 800 },
+  { totalAmount: 22320, installmentsCount: 6, perInstallment: 3720, commission: 1110 },
+  { totalAmount: 26660, installmentsCount: 6, perInstallment: 4443, commission: 1330 },
+  { totalAmount: 27776, installmentsCount: 12, perInstallment: 2314, commission: 1390 },
+  { totalAmount: 40300, installmentsCount: 12, perInstallment: 3358, commission: 2015 },
+  { totalAmount: 65348, installmentsCount: 12, perInstallment: 5445, commission: 3267 },
+  { totalAmount: 130820, installmentsCount: 36, perInstallment: 3634, commission: 2900 },
 ];
 
-const TAMARA_ONLY_PRICES = [24000, 50000, 100000, 6210, 31050, 12420, 4140, 20700, 8280];
-const TABBY_ONLY_PRICES = [6000, 18000];
+const TAMARA_ONLY_PRICES = [27776, 40300, 65348, 130820, 10850, 16120, 22320, 26660];
+const TABBY_ONLY_PRICES: number[] = [];
 
 const WalletIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#000000" strokeWidth="1.5">
