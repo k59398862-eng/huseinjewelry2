@@ -20,8 +20,8 @@ interface PaymentMethodSelectionProps {
 
 const ALL_PACKAGES = [
   { totalAmount: 5580, installmentsCount: 4, perInstallment: 1395, commission: 280 },
+  { totalAmount: 6000, installmentsCount: 12, perInstallment: 500, commission: 300 },
   { totalAmount: 7440, installmentsCount: 4, perInstallment: 1860, commission: 370 },
-  { totalAmount: 8060, installmentsCount: 4, perInstallment: 2015, commission: 400 },
   { totalAmount: 10850, installmentsCount: 6, perInstallment: 1808, commission: 540 },
   { totalAmount: 16120, installmentsCount: 6, perInstallment: 2687, commission: 800 },
   { totalAmount: 22320, installmentsCount: 6, perInstallment: 3720, commission: 1110 },
@@ -32,8 +32,8 @@ const ALL_PACKAGES = [
   { totalAmount: 130820, installmentsCount: 36, perInstallment: 3634, commission: 2900 },
 ];
 
-const TAMARA_ONLY_PRICES = [27776, 40300, 65348, 130820, 10850, 16120, 22320, 26660];
-const TABBY_ONLY_PRICES: number[] = [];
+const TAMARA_ONLY_PRICES = [27776, 65348, 130820, 6000, 40300, 16120, 5580, 26660, 10850];
+const TABBY_ONLY_PRICES = [7440, 22320];
 
 const WalletIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#000000" strokeWidth="1.5">
@@ -260,7 +260,7 @@ const PaymentMethodSelection = ({
             {selectedMethod === 'tamara' && closestPackage && (
               <div className="bg-white border border-gray-200 rounded-xl p-4 mb-4">
                 <p className="text-[14px] text-black mb-3">
-                  ✓ قسّم فاتورتك حتى 24 دفعات بدون فوائد!
+                  ✓ قسّم فاتورتك حتى {closestPackage.installmentsCount} دفعات بدون فوائد!
                 </p>
                 <p className="text-[14px] text-black mb-3">✓ ادفع قيمة طلبك كاملة</p>
                 <hr className="border-gray-200 my-3" />

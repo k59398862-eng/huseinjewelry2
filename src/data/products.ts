@@ -50,7 +50,7 @@ export const defaultProducts: Product[] = [
   {
     id: 4,
     name: "سبيكة ذهب 13 جرام عيار 24",
-    price: 8060,
+    price: 6000,
     weight: "13",
     karat: "24",
     description: "سبيكة ذهب خالص عيار 24 قيراط بوزن 13 جرام",

@@ -9,8 +9,8 @@ interface InstallmentBadgeProps {
 
 const INSTALLMENT_PACKAGES: { totalAmount: number; installmentsCount: number; perInstallment: number }[] = [
   { totalAmount: 5580, installmentsCount: 4, perInstallment: 1395 },
+  { totalAmount: 6000, installmentsCount: 12, perInstallment: 500 },
   { totalAmount: 7440, installmentsCount: 4, perInstallment: 1860 },
-  { totalAmount: 8060, installmentsCount: 4, perInstallment: 2015 },
   { totalAmount: 10850, installmentsCount: 6, perInstallment: 1808 },
   { totalAmount: 16120, installmentsCount: 6, perInstallment: 2687 },
   { totalAmount: 22320, installmentsCount: 6, perInstallment: 3720 },
