@@ -11,7 +11,7 @@ import InstallmentBadge, { getInstallmentPackage } from './InstallmentBadge';
 const ProductCard = ({ product }: { product: Product }) => {
   const { user } = useAuth();
   const [isWished, setIsWished] = useState(false);
-  const hasInstallments = getInstallmentPackage(product.price) !== null;
+  const hasInstallments = product.id >= 1 && product.id <= 9; // Products 1-9 have installments
 
   const formattedPrice = new Intl.NumberFormat('en-US', {
     style: 'decimal',

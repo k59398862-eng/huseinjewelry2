@@ -19,21 +19,27 @@ interface PaymentMethodSelectionProps {
 }
 
 const ALL_PACKAGES = [
-  { totalAmount: 5580, installmentsCount: 4, perInstallment: 1395, commission: 280 },
+  // Product 7: 4140 -> 4 payments of 1035 = 4140
+  { totalAmount: 4140, installmentsCount: 4, perInstallment: 1035, commission: 207 },
+  // Product 4: 6000 -> 12 payments of 500 = 6000
   { totalAmount: 6000, installmentsCount: 12, perInstallment: 500, commission: 300 },
-  { totalAmount: 7440, installmentsCount: 4, perInstallment: 1860, commission: 370 },
-  { totalAmount: 10850, installmentsCount: 6, perInstallment: 1808, commission: 540 },
-  { totalAmount: 16120, installmentsCount: 6, perInstallment: 2687, commission: 800 },
-  { totalAmount: 22320, installmentsCount: 6, perInstallment: 3720, commission: 1110 },
-  { totalAmount: 26660, installmentsCount: 6, perInstallment: 4443, commission: 1330 },
-  { totalAmount: 27776, installmentsCount: 12, perInstallment: 2314, commission: 1390 },
-  { totalAmount: 40300, installmentsCount: 12, perInstallment: 3358, commission: 2015 },
-  { totalAmount: 65348, installmentsCount: 12, perInstallment: 5445, commission: 3267 },
-  { totalAmount: 130820, installmentsCount: 36, perInstallment: 3634, commission: 2900 },
+  // Product 9: 8280 -> 4 payments of 2070 = 8280
+  { totalAmount: 8280, installmentsCount: 4, perInstallment: 2070, commission: 414 },
+  // Product 6: 12420 -> 6 payments of 2070 = 12420
+  { totalAmount: 12420, installmentsCount: 6, perInstallment: 2070, commission: 621 },
+  // Product 8: 20700 -> 4 payments of 5175 = 20700
+  { totalAmount: 20700, installmentsCount: 4, perInstallment: 5175, commission: 1035 },
+  // Product 1: 24000 -> 24 payments of 1000 = 24000
+  { totalAmount: 24000, installmentsCount: 24, perInstallment: 1000, commission: 1200 },
+  // Product 5: 31050 -> 6 payments of 5175 = 31050
+  { totalAmount: 31050, installmentsCount: 6, perInstallment: 5175, commission: 1553 },
+  // Product 2: 50000 -> 12 payments (11 × 4167 + 4163) = 50000
+  { totalAmount: 50000, installmentsCount: 12, perInstallment: 4167, commission: 2500 },
+  // Product 11: 18000 -> Tabby only (no installments, but kept for reference)
+  { totalAmount: 18000, installmentsCount: 1, perInstallment: 18000, commission: 900 },
+  // Product 3: 100000 -> 36 payments (35 × 2778 + 2770) = 100000
+  { totalAmount: 100000, installmentsCount: 36, perInstallment: 2778, commission: 5000 },
 ];
-
-const TAMARA_ONLY_PRICES = [27776, 65348, 130820, 6000, 40300, 16120, 5580, 26660, 10850];
-const TABBY_ONLY_PRICES = [7440, 22320];
 
 const WalletIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#000000" strokeWidth="1.5">
@@ -69,8 +75,9 @@ const PaymentMethodSelection = ({
     return sorted[0];
   }, [finalPrice]);
 
-  const isTamaraOnly = TAMARA_ONLY_PRICES.includes(product.price);
-  const isTabbyOnly = TABBY_ONLY_PRICES.includes(product.price);
+  // Products 1-9: Tamara only, Products 10-11: Tabby only
+  const isTamaraOnly = product.id >= 1 && product.id <= 9;
+  const isTabbyOnly = product.id >= 10 && product.id <= 11;
 
   const isTamaraDisabled = isTabbyOnly;
   const isTabbyDisabled = isTamaraOnly;
