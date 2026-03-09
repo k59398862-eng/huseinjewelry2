@@ -17,7 +17,7 @@ export const defaultProducts: Product[] = [
   {
     id: 1,
     name: "سبيكة ذهب 44.8 جرام عيار 24",
-    price: 24000,
+    price: 27776,
     weight: "44.8",
     karat: "24",
     description: "سبيكة ذهب خالص عيار 24 قيراط بوزن 44.8 جرام",
@@ -28,7 +28,7 @@ export const defaultProducts: Product[] = [
   {
     id: 2,
     name: "سبيكة ذهب 105.4 جرام عيار 24",
-    price: 50000,
+    price: 65348,
     weight: "105.4",
     karat: "24",
     description: "سبيكة ذهب خالص عيار 24 قيراط بوزن 105.4 جرام",
@@ -39,7 +39,7 @@ export const defaultProducts: Product[] = [
   {
     id: 3,
     name: "سبيكة ذهب 211 جرام عيار 24",
-    price: 100000,
+    price: 130820,
     weight: "211",
     karat: "24",
     description: "سبيكة ذهب خالص عيار 24 قيراط بوزن 211 جرام",
@@ -50,7 +50,7 @@ export const defaultProducts: Product[] = [
   {
     id: 4,
     name: "سبيكة ذهب 13 جرام عيار 24",
-    price: 6210,
+    price: 8060,
     weight: "13",
     karat: "24",
     description: "سبيكة ذهب خالص عيار 24 قيراط بوزن 13 جرام",
@@ -61,7 +61,7 @@ export const defaultProducts: Product[] = [
   {
     id: 5,
     name: "سبيكة ذهب 65 جرام عيار 24",
-    price: 31050,
+    price: 40300,
     weight: "65",
     karat: "24",
     description: "سبيكة ذهب خالص عيار 24 قيراط بوزن 65 جرام",
@@ -72,7 +72,7 @@ export const defaultProducts: Product[] = [
   {
     id: 6,
     name: "سبيكة ذهب 26 جرام عيار 24",
-    price: 12420,
+    price: 16120,
     weight: "26",
     karat: "24",
     description: "سبيكة ذهب خالص عيار 24 قيراط بوزن 26 جرام",
@@ -83,7 +83,7 @@ export const defaultProducts: Product[] = [
   {
     id: 7,
     name: "سبيكة ذهب 9 جرام عيار 24",
-    price: 4140,
+    price: 5580,
     weight: "9",
     karat: "24",
     description: "سبيكة ذهب خالص عيار 24 قيراط بوزن 9 جرام",
@@ -94,7 +94,7 @@ export const defaultProducts: Product[] = [
   {
     id: 8,
     name: "سبيكة ذهب 43 جرام عيار 24",
-    price: 20700,
+    price: 26660,
     weight: "43",
     karat: "24",
     description: "سبيكة ذهب خالص عيار 24 قيراط بوزن 43 جرام",
@@ -105,7 +105,7 @@ export const defaultProducts: Product[] = [
   {
     id: 9,
     name: "سبيكة ذهب 17.5 جرام عيار 24",
-    price: 8280,
+    price: 10850,
     weight: "17.5",
     karat: "24",
     description: "سبيكة ذهب خالص عيار 24 قيراط بوزن 17.5 جرام",
@@ -116,7 +116,7 @@ export const defaultProducts: Product[] = [
   {
     id: 10,
     name: "سبيكة ذهب 12 جرام عيار 24",
-    price: 6000,
+    price: 7440,
     weight: "12",
     karat: "24",
     description: "سبيكة ذهب خالص عيار 24 قيراط بوزن 12 جرام",
@@ -127,7 +127,7 @@ export const defaultProducts: Product[] = [
   {
     id: 11,
     name: "سبيكة ذهب 36 جرام عيار 24",
-    price: 18000,
+    price: 22320,
     weight: "36",
     karat: "24",
     description: "سبيكة ذهب خالص عيار 24 قيراط بوزن 36 جرام",
