@@ -30,7 +30,85 @@ try {
 }
 app.use("/uploads", express.static(uploadsDir));
 
-app.get("/api/health", (_req, res) => res.json({ status: "ok", time: new Date().toISOString() }));
+app.get("/api/health", async (_req, res) => {
+  const services = {
+    server: { status: 'ok' },
+    database: { status: 'unknown' },
+    telegram: { status: 'unknown' }
+  };
+  
+  let overallStatus = 'ok';
+  
+  // فحص قاعدة البيانات
+  try {
+    const { PrismaClient } = require("@prisma/client");
+    const prisma = new PrismaClient();
+    await prisma.$queryRaw`SELECT 1`;
+    await prisma.$disconnect();
+    services.database.status = 'ok';
+  } catch (error) {
+    services.database.status = 'error';
+    services.database.error = error.message;
+    overallStatus = 'degraded';
+    console.error('[Health Check] Database error:', error.message);
+  }
+  
+  // فحص Telegram Bot
+  try {
+    const { getBot } = require('./services/telegram');
+    const bot = getBot();
+    
+    if (!bot) {
+      services.telegram.status = 'not_initialized';
+      services.telegram.error = 'Telegram bot not initialized';
+      overallStatus = 'degraded';
+    } else {
+      const useWebhook = process.env.NODE_ENV === 'production' && process.env.BACKEND_URL;
+      
+      if (useWebhook) {
+        const webhookInfo = await bot.getWebHookInfo();
+        services.telegram = {
+          status: 'ok',
+          mode: 'webhook',
+          webhookUrl: webhookInfo.url,
+          pendingUpdates: webhookInfo.pending_update_count,
+          hasPendingUpdates: webhookInfo.pending_update_count > 0,
+          lastErrorDate: webhookInfo.last_error_date,
+          lastErrorMessage: webhookInfo.last_error_message
+        };
+        
+        // إذا كان هناك many pending updates أو خطأ، فهذا يدل على مشكلة
+        if (webhookInfo.pending_update_count > 50) {
+          overallStatus = 'degraded';
+          services.telegram.warning = 'High number of pending updates';
+        }
+        if (webhookInfo.last_error_date) {
+          overallStatus = 'degraded';
+          services.telegram.warning = 'Webhook has last error';
+        }
+      } else {
+        services.telegram = {
+          status: 'ok',
+          mode: 'polling'
+        };
+      }
+    }
+  } catch (error) {
+    services.telegram.status = 'error';
+    services.telegram.error = error.message;
+    overallStatus = 'degraded';
+    console.error('[Health Check] Telegram error:', error.message);
+  }
+  
+  // إرجاع 503 إذا كان هناك مشكلة
+  const statusCode = overallStatus === 'ok' ? 200 : 503;
+  
+  res.status(statusCode).json({
+    status: overallStatus,
+    time: new Date().toISOString(),
+    services
+  });
+});
 
 const pollingLimiter = rateLimit({
   windowMs: 60 * 1000,
