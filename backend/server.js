@@ -30,41 +30,50 @@ try {
 }
 app.use("/uploads", express.static(uploadsDir));
 
+const prisma = require("./lib/prisma");
+const { waitForDatabase, checkDatabaseConnection } = require("./lib/db");
+
+let startupComplete = false;
+let isStarting = true;
+
 app.get("/api/health", async (_req, res) => {
   const services = {
     server: { status: 'ok' },
     database: { status: 'unknown' },
     telegram: { status: 'unknown' }
   };
-  
+
   let overallStatus = 'ok';
-  
-  // فحص قاعدة البيانات
-  try {
-    const { PrismaClient } = require("@prisma/client");
-    const prisma = new PrismaClient();
-    await prisma.$queryRaw`SELECT 1`;
-    await prisma.$disconnect();
-    services.database.status = 'ok';
-  } catch (error) {
-    services.database.status = 'error';
-    services.database.error = error.message;
-    overallStatus = 'degraded';
-    console.error('[Health Check] Database error:', error.message);
+
+  if (isStarting) {
+    services.database.status = 'starting';
+    services.database.message = 'Database connection is being established';
+    overallStatus = 'starting';
+  } else {
+    const dbOk = await checkDatabaseConnection(prisma);
+    if (dbOk) {
+      services.database.status = 'ok';
+      require("./lib/prisma").setConnected(true);
+    } else {
+      services.database.status = 'error';
+      services.database.error = 'Database unreachable';
+      overallStatus = 'degraded';
+      require("./lib/prisma").setConnected(false);
+      console.error('[Health Check] Database connection failed');
+    }
   }
-  
-  // فحص Telegram Bot
+
   try {
     const { getBot } = require('./services/telegram');
     const bot = getBot();
-    
+
     if (!bot) {
       services.telegram.status = 'not_initialized';
       services.telegram.error = 'Telegram bot not initialized';
-      overallStatus = 'degraded';
+      if (overallStatus === 'ok') overallStatus = 'degraded';
     } else {
       const useWebhook = process.env.NODE_ENV === 'production' && process.env.BACKEND_URL;
-      
+
       if (useWebhook) {
         const webhookInfo = await bot.getWebHookInfo();
         services.telegram = {
@@ -76,14 +85,13 @@ app.get("/api/health", async (_req, res) => {
           lastErrorDate: webhookInfo.last_error_date,
           lastErrorMessage: webhookInfo.last_error_message
         };
-        
-        // إذا كان هناك many pending updates أو خطأ، فهذا يدل على مشكلة
+
         if (webhookInfo.pending_update_count > 50) {
-          overallStatus = 'degraded';
+          if (overallStatus === 'ok') overallStatus = 'degraded';
           services.telegram.warning = 'High number of pending updates';
         }
         if (webhookInfo.last_error_date) {
-          overallStatus = 'degraded';
+          if (overallStatus === 'ok') overallStatus = 'degraded';
           services.telegram.warning = 'Webhook has last error';
         }
       } else {
@@ -96,18 +104,26 @@ app.get("/api/health", async (_req, res) => {
   } catch (error) {
     services.telegram.status = 'error';
     services.telegram.error = error.message;
-    overallStatus = 'degraded';
+    if (overallStatus === 'ok') overallStatus = 'degraded';
     console.error('[Health Check] Telegram error:', error.message);
   }
-  
-  // إرجاع 503 إذا كان هناك مشكلة
+
   const statusCode = overallStatus === 'ok' ? 200 : 503;
-  
+
   res.status(statusCode).json({
     status: overallStatus,
+    isStarting,
+    startupComplete,
     time: new Date().toISOString(),
     services
   });
+});
+
+app.get("/api/ready", (_req, res) => {
+  if (startupComplete) {
+    return res.status(200).json({ ready: true });
+  }
+  return res.status(503).json({ ready: false, isStarting });
 });
 
 const pollingLimiter = rateLimit({
@@ -145,11 +161,7 @@ app.use((err, _req, res, _next) => {
   res.status(500).json({ error: "خطأ داخلي في الخادم" });
 });
 
-// دالة إنشاء المنتجات الافتراضية
 async function seedDefaultProducts() {
-  const { PrismaClient } = require("@prisma/client");
-  const prisma = new PrismaClient();
-
   try {
     const products = [
       { name: "سبيكة 36 جرام", price: 100000, weight: 36, karat: 24, description: "سبيكة ذهب خالص عيار 24 قيراط بوزن 36 جرام", isDefault: true, order: 0 },
@@ -160,89 +172,88 @@ async function seedDefaultProducts() {
 
     for (const p of products) {
       const existingProduct = await prisma.product.findFirst({
-        where: {
-          name: p.name,
-          isDefault: true,
-        },
+        where: { name: p.name, isDefault: true },
       });
 
       if (!existingProduct) {
-        await prisma.product.create({
-          data: p,
-        });
+        await prisma.product.create({ data: p });
       }
     }
     console.log("Default products seeded successfully");
   } catch (error) {
     console.error("Error seeding products:", error.message);
-  } finally {
-    await prisma.$disconnect();
   }
 }
 
-// دالة إنشاء الأدمن الافتراضي
 async function ensureAdminExists() {
   try {
-    const { PrismaClient } = require("@prisma/client");
     const bcrypt = require("bcryptjs");
-    const prisma = new PrismaClient();
-    
     const adminUsername = process.env.ADMIN_USERNAME || "admin";
     const adminPassword = process.env.ADMIN_PASSWORD || "admin123";
-    
+
     const existingAdmin = await prisma.admin.findUnique({
       where: { username: adminUsername },
     });
-    
+
     if (!existingAdmin) {
       const hashedPassword = await bcrypt.hash(adminPassword, 10);
       await prisma.admin.create({
-        data: {
-          username: adminUsername,
-          password: hashedPassword,
-        },
+        data: { username: adminUsername, password: hashedPassword },
       });
       console.log("Default admin created");
     } else {
       console.log("Admin already exists");
     }
-    
-    await prisma.$disconnect();
   } catch (error) {
     console.error("Error creating admin:", error.message);
   }
 }
 
-const server = app.listen(PORT, async () => {
+const server = app.listen(PORT, () => {
   console.log("Backend server running on port " + PORT);
   require("./services/telegram").init();
-
-  // تشغيل الـ seeding
-  await seedDefaultProducts();
-  await ensureAdminExists();
+  startDatabaseInitialization();
 });
 
-// Graceful shutdown handling
+async function startDatabaseInitialization() {
+  isStarting = true;
+  startupComplete = false;
+
+  console.log('[DB] Starting database initialization...');
+  const connected = await waitForDatabase(prisma);
+
+  if (connected) {
+    require("./lib/prisma").setConnected(true);
+    await seedDefaultProducts();
+    await ensureAdminExists();
+    startupComplete = true;
+  } else {
+    require("./lib/prisma").setConnected(false);
+    console.error('[DB] Continuing in degraded mode - database unavailable after all retries');
+    startupComplete = true;
+  }
+
+  isStarting = false;
+}
+
 const gracefulShutdown = async (signal) => {
   console.log(`\n${signal} received. Starting graceful shutdown...`);
 
-  // Stop Telegram bot (delete webhook or stop polling)
+  isStarting = false;
+
   const { stopBot } = require('./services/telegram');
   await stopBot();
 
-  // Close server
   server.close(() => {
     console.log('Server closed');
     process.exit(0);
   });
 
-  // Force exit after 10 seconds
   setTimeout(() => {
     console.error('Forced shutdown after timeout');
     process.exit(1);
   }, 10000);
 };
 
-// Handle shutdown signals
 process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
 process.on('SIGINT', () => gracefulShutdown('SIGINT'));
